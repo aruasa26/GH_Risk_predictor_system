@@ -1,0 +1,30 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Node / JS
+node_modules/
+dist/
+build/
+.next/
+.out/
+.cache/
+.parcel-cache/
+coverage/
+*.log
+
+# Env & OS / Editors
+.env
+.env.*
+!.env.example
+.DS_Store
+.idea/
+.vscode/
+
+# Misc
+*.sqlite
