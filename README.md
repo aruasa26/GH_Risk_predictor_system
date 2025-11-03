@@ -155,6 +155,8 @@ Log in to view latest GH risk result.
 
 See status and next ANC visit date.
 
+Confirm or reschedule attendance of the scheduled ANC Visit
+
 Review doctor’s advice or notes.
 
 🧠 Machine Learning Model
