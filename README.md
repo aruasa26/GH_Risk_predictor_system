@@ -57,6 +57,7 @@ SHAP-based explainability for feature importance
 Custom AUC-ROC visualization script (plot_roc.py)
 
 Project Structure
+```
 GH_Risk_Predictor_System/
 ├── backend/
 │   ├── app/
@@ -83,6 +84,7 @@ GH_Risk_Predictor_System/
 │   ├── y_train.csv / y_test.csv
 │   └── plot_roc.py
 └── README.md
+```
 
 🚀 Getting Started
 Prerequisites
