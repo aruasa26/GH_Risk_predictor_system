@@ -7,7 +7,7 @@
 
 ## 1. Executive Summary
 
-This project successfully designed and deployed an end-to-end deep learning system for early prediction of Gestational Hypertension (GH). The system integrates clinical data from two distinct sources—Mendeley Data Repository and Kathmandu Model Hospital—to generate accurate risk predictions.
+This project was successfully designed and developed as an end-to-end deep learning system for early prediction of Gestational Hypertension (GH) risk. The system integrates clinical data from two distinct sources—Mendeley Data Repository and Kathmandu Hospital—to generate accurate risk predictions.
 
 Using the TabNet architecture, the model achieved a **Recall of ~90%**, meeting the safety-first requirement of minimizing false negatives. The completed system includes:
 
