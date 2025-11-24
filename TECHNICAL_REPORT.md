@@ -1,147 +1,141 @@
-Gestational Hypertension Prediction System – Technical Report
-Project Completion & Evaluation Report
+# Gestational Hypertension Risk Prediction System – Technical Report
+**Project Completion & Evaluation Report**  
+**Date:** November 2025  
+**Model:** TabNet 
 
-Date: November 2025
-Model: TabNet 
+---
 
-1. Executive Summary
+## 1. Executive Summary
 
 This project successfully designed and deployed an end-to-end deep learning system for early prediction of Gestational Hypertension (GH). The system integrates clinical data from two distinct sources—Mendeley Data Repository and Kathmandu Model Hospital—to generate accurate risk predictions.
 
-Using the TabNet architecture, the model achieved a Recall of ~90%, meeting the safety-first requirement of minimizing false negatives. The completed system includes:
+Using the TabNet architecture, the model achieved a **Recall of ~90%**, meeting the safety-first requirement of minimizing false negatives. The completed system includes:
 
-A harmonized and fully cleaned data pipeline
+- A harmonized and fully cleaned data pipeline  
+- A FastAPI inference engine  
+- A React-based clinical dashboard  
+- Automated ANC (Antenatal Care) scheduling for high-risk patients  
 
-A FastAPI inference engine
+---
 
-A React-based clinical dashboard
+## 2. Approach
 
-Automated ANC (Antenatal Care) scheduling for high-risk patients
+### 2.1 Data Preprocessing & Harmonization
 
-2. Approach
-2.1 Data Preprocessing & Harmonization
-Datasets Used
+**Datasets Used:**
 
-Mendeley Dataset: Acute physiological vitals (SBP, DBP, Heart Rate)
+- **Mendeley Dataset:** Acute physiological vitals (SBP, DBP, Heart Rate)  
+- **Kathmandu Dataset:** Longitudinal obstetric history (Gravida, Parity, GH history)  
 
-Kathmandu Dataset: Longitudinal obstetric history (Gravida, Parity, GH history)
+**Harmonization Steps:**
 
-Harmonization Steps
+#### Schema Alignment
+- Standardized variable names (e.g., `systolic_bp` and `SBP` → `Systolic BP`)  
 
-Schema Alignment
+#### Features
+- Identified **19 essential clinical features** common across both datasets  
 
-Standardized variable names (e.g., systolic_bp and SBP → Systolic BP)
+#### Cleaning
+- Median imputation for numerical features  
+- Mode imputation for categorical features  
 
-Feature Selection
+#### Encoding
+- Applied **Label Encoding** (e.g., Low = 0, High = 1)  
 
-Identified 19 essential clinical features common across both datasets
+#### Imbalance Handling
+- High-risk cases ≈ 18% of data  
+- Applied **SMOTE-NC** to generate balanced training samples  
 
-Cleaning
+**Final Dataset:**
 
-Median imputation for numerical features
+- ~10,000 samples  
+- 19 input features  
+- Stratified split: Train 80%, Test 20%  
 
-Mode imputation for categorical features
+---
 
-Encoding
+### 2.2 Model Architecture
 
-Applied Label Encoding (e.g., Low = 0, High = 1)
+**Model:** TabNet  
 
-Imbalance Handling
+**Why TabNet?**  
 
-High-risk cases ≈ 18%
+Traditional MLPs struggle on tabular health data. TabNet provides:  
 
-Applied SMOTE-NC to increase minority samples
+- Sequential attention mechanism  
+- Sparse masks for critical clinical features  
+- Built-in interpretability  
 
-Final Dataset
+**Architecture Components:**
 
-~10,000 samples
+- **Feature Transformer:** Learns deep feature representations  
+- **Attentive Transformer:** Generates sparsemask to select critical inputs, used 9 out of the 19
+- **Sparse Masking:** Only a subset of features is used at each decision step.
+  
+**Training Configuration:**
 
-19 input features
+- **Optimizer:** Adam (lr = 0.02)  
+- **Loss:** Weighted Cross-Entropy (penalizes missed high-risk cases)  
+- **Batch Size:** 1024 (Virtual batch: 128)  
+- **Epochs:** 200  
+- **Early Stopping:** patience = 85  
 
-Stratified split: Train 80%, Test 20%
+---
 
-2.2 Model Architecture
+### 2.3 Evaluation Metrics
 
-Model: TabNet
+Priority metrics for this medical classification task:
 
-Why TabNet?
+- **Recall (Sensitivity)** – critical to capture high-risk GH cases  
+- **F1-Score** – balance between recall and precision  
+- **AUC-ROC** – measures model separability  
 
-Traditional MLPs struggle on tabular health data
+---
 
-TabNet provides:
+## 3. Results Summary
 
-Sequential attention
+### 3.1 Model Performance (Test Set)
 
-Sparse masks for important clinical features
+| Metric      |Results | 
+|-------------|--------|
+| Recall      | 0.90   | 
+| F1-Score    | 0.85   | 
+| Accuracy    | 0.94   | 
+| AUC-ROC     | 0.896  | 
 
-Built-in interpretability
+### 3.2 Key Clinical Findings
 
+**Top Features Identified by TabNet Masks:**  
 
-Training Configuration
+- Systolic BP  
+- Diastolic BP  
+- History of GH  
 
-Optimizer: Adam (lr = 0.02)
+**Safety Margin:**  
+- Correctly flagged 9 out of 10 high-risk patients  
 
-Loss: Weighted Cross-Entropy (penalizes missed high-risk cases)
+---
 
-Batch Size: 1024 (Virtual batch: 128)
+## 4. Challenges Faced
 
-Epochs: 200
+### 4.1 Data-Related Challenges
+- **Class Imbalance:** High-risk cases ~18%  
+  
+### 4.2 Model-Related Challenges
+- **Overfitting:** Controlled using early stopping 
+- **Interpretability:** Clinicians required reasoning; TabNet had **“Reasoning”** on dashboard  
 
-Early Stopping: patience = 85
+---
 
-2.3 Evaluation Metrics
+## 5. API Design & Deployment
 
-Because this is a medical classification task, priority was given to:
+### 5.1 Production API Specification
 
-Recall (Sensitivity) 
+**Endpoint:** `POST /predict`
 
-AUC-ROC – model separability
+**Request Body (JSON):**
 
-F1-Score – balance between recall and precision
-
-AUC-ROC – model separability
-
-3. Results Summary
-3.1 Model Performance (Test Set)
-Metric	TabNet	Logistic Regression	Winner
-Recall	0.94	0.65	TabNet
-F1-Score	0.85	0.58	TabNet
-Accuracy	0.94	0.82	TabNet
-AUC-ROC	0.896	0.85	TabNet
-3.2 Key Clinical Findings
-
-Top Features Identified by TabNet Masks
-
-Systolic BP
-
-Diastolic BP
-
-History of GH
-
-Safety Margin
-
-Correctly flagged 9 out of 10 high-risk patients
-
-
-4. Challenges Faced
-4.1 Data-Related Challenges
-
-Class Imbalance: High-risk ≈ 18%
-
-4.2 Model-Related Challenges
-
-Overfitting: Controlled using early stopping
-
-Interpretability: TabNet masks as “Reasoning” on dashboard
-
-5. API Design & Deployment
-5.1 Production API Specification
-
-Endpoint:
-POST /predict
-
-Request Body (JSON):
-
+```json
 {
   "age": 32,
   "systolic_bp": 145,
@@ -150,10 +144,9 @@ Request Body (JSON):
   "gh_history": 1,
   "parity": 2
 }
-
-
-Response Body:
-
+```
+### Response Body (JSON)
+```json
 {
   "risk_classification": "High Risk",
   "probability_score": 0.88,
@@ -164,35 +157,24 @@ Response Body:
   ],
   "timestamp": "2025-11-23T14:30:00Z"
 }
+```
+## 5.2 Logic Flow
 
-6.2 Logic Flow
+1. **Clinician submits patient data** via React Dashboard  
+2. **FastAPI backend**:  
+   - Validates JSON schema  
+   - Runs preprocessing  
+   - Calls TabNet for inference  
+3. **Decision Layer**: Determines High/Low Risk based on probability threshold  
+4. **Save prediction** to PostgreSQL  
+5. **Dashboard updates** with High/Low Risk and reasoning  
 
-Clinician submits patient data via React Dashboard
+## 6. Conclusion
 
-FastAPI:
+The project successfully delivered a **Gestational Hypertension Prediction System** with:  
 
-Validates schema
-
-Runs preprocessing
-
-Calls TabNet inference
-
-Decision Layer processes risk threshold
-
-Save prediction to PostgreSQL
-
-Dashboard displays High/Low Risk and reasoning
-
-7. Conclusion
-
-The project successfully delivered a complete Gestational Hypertension Prediction System with:
-
-High predictive performance
-
-Clinical-grade recall
-
-Built-in interpretability via TabNet
-
-A full-stack pipeline (React + FastAPI + PostgreSQL)
-
-ANC scheduling for actionable care
+- High predictive performance  
+- Clinical-grade recall (~90%)  
+- Built-in interpretability via TabNet masks  
+- Full-stack pipeline integration (**React + FastAPI + PostgreSQL**)  
+- ANC scheduling for actionable patient care  
