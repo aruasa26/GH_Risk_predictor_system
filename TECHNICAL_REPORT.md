@@ -14,7 +14,7 @@ Using the TabNet architecture, the model achieved a **Recall of ~90%**, meeting 
 - A harmonized and fully cleaned data pipeline  
 - A FastAPI inference engine  
 - A React-based clinical dashboard  
-- Automated ANC (Antenatal Care) scheduling for high-risk patients  
+- ANC(Antenatal Care) visits scheduling for patients  
 
 ---
 
@@ -177,4 +177,4 @@ The project successfully delivered a **Gestational Hypertension Prediction Syste
 - Clinical-grade recall (~90%)  
 - Built-in interpretability via TabNet masks  
 - Full-stack pipeline integration (**React + FastAPI + PostgreSQL**)  
-- ANC scheduling for actionable patient care  
+- ANC visit scheduling for actionable patient care  
