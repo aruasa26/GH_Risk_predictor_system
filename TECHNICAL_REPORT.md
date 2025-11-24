@@ -100,7 +100,6 @@ Priority metrics for this medical classification task:
 |-------------|--------|
 | Recall      | 0.90   | 
 | F1-Score    | 0.81   | 
-| Accuracy    | 0.92   | 
 | Precision   | 0.73   |
 | AUC-ROC     | 0.896  | 
 
