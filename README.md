@@ -1,74 +1,62 @@
-🩺Gestational Hypertension (GH) Risk Prediction System
+# Gestational Hypertension (GH) Risk Prediction System
 
-A full-stack predictive healthcare platform that estimates the risk of Gestational Hypertension (GH) in pregnant women using clinical data.
-This system integrates machine learning with modern web technologies to assist clinicians in early detection and personalized antenatal care.
+**A full-stack predictive healthcare platform that estimates the risk of Gestational Hypertension (GH) in pregnant women using clinical data.**
 
-🎯 Overview
+This system integrates deep learning (TabNet) with modern web technologies to assist clinicians in early detection and personalized antenatal care (ANC) management.
 
-The GH Risk Prediction System applies a trained deep-learning model called Tabnet to antenatal data to predict whether a patient is at risk of developing gestational hypertension.
-It provides a real-time, evidence-based interface for clinicians and patients, combining explainable AI with an efficient digital workflow.
+---
 
-Key Features
+##  Overview
 
-Clinical risk prediction — powered by a trained TabNet model
+The GH Risk Prediction System applies a trained **PyTorch-TabNet** model to antenatal data to predict whether a patient is at risk of developing gestational hypertension. It shifts care from reactive to predictive, providing a real-time, evidence-based interface for clinicians and patients that combines explainable AI with an efficient digital workflow.
 
-Role-based access — Clinician, Doctor, and Patient interfaces
+## Key Features
 
-Automated ANC visit management — next-visit reminders and rescheduling
+* **Clinical Risk Prediction:** Real-time inference powered by a trained TabNet deep learning model.
+* **Role-Based Access Control:** Dedicated interfaces for **Clinicians** (Input/Manage), **Doctors** (Oversight), and **Patients** (View).
+* **ANC Management:** ANC next-visit scheduling and rescheduling capabilities.
+* **Persistent History:** Every prediction is stored and linked to the patient's medical history for longitudinal tracking.
+* **Explainable AI (XAI):** Clear, feature-based reasoning (using SHAP values) for every prediction to aid clinical trust.
+* **⚡ Modern UI:** Fast, responsive dashboards built with React and Tailwind CSS.
 
-Persistent prediction storage — every prediction linked to patient history
+---
 
-Explainable output — clear feature-based reasoning for each prediction
+##  Architecture & Technology Stack
 
-Modern UI — fast, responsive dashboards for clinical use
+### Frontend
+* **Framework:** React (Vite)
+* **Styling:** Tailwind CSS
+* **State/Auth:** React Router + Context API
+* **Networking:** Axios
 
-🏗️ Architecture
-Technology Stack
-Frontend
+### Backend
+* **Framework:** FastAPI (Python)
+* **Database:** PostgreSQL 15+
+* **ORM:** SQLAlchemy + Alembic (Migrations)
+* **Validation:** Pydantic
+* **Serialization:** Joblib
 
-React (Vite)
+### Machine Learning
+* **Model:** PyTorch-TabNet (Deep Learning for Tabular Data)
+* **Calibration:** Isotonic Regression (for probability adjustment)
+* **Explainability:** SHAP (Shapley Additive Explanations)
+* **Visualization:** Matplotlib/Seaborn (Custom ROC scripts)
 
-Tailwind CSS
+---
 
-Axios API client
-
-React Router + Context API for authentication
-
-Backend
-
-FastAPI (Python)
-
-PostgreSQL database
-
-SQLAlchemy ORM + Alembic migrations
-
-Pydantic for validation
-
-Joblib for model serialization
-
-Machine Learning
-
-PyTorch-TabNet model trained on structured maternal data
-
-Isotonic calibration for probability adjustment
-
-SHAP-based explainability for feature importance
-
-Custom AUC-ROC visualization script (plot_roc.py)
-
-Project Structure
+## 📂 Project Structure
 ```
 GH_Risk_Predictor_System/
 ├── backend/
 │   ├── app/
-│   │   ├── gh_predict.py       # ML inference & persistence
-│   │   ├── patients.py         # Patient management, resolve & advice
-│   │   ├── visits.py           # ANC visit scheduling
+│   │   ├── gh_predict.py       # ML inference logic & persistence
+│   │   ├── patients.py         # Patient management endpoints
+│   │   ├── visits.py           # ANC visit scheduling logic
 │   │   ├── db.py               # Database engine & session factory
-│   │   ├── models_risk.py      # ORM models
+│   │   ├── models_risk.py      # SQLAlchemy ORM models
 │   │   └── main.py             # FastAPI entry point
 │   └── ml_model/
-│       ├── tabnet_model.pkl
+│       ├── tabnet_model.pkl    # Trained Model
 │       ├── isotonic_calibrator.pkl
 │       ├── feature_order.json
 │       ├── threshold.json
@@ -79,128 +67,48 @@ GH_Risk_Predictor_System/
 │   │   └── PatientDashboard.jsx
 │   ├── src/components/
 │   └── package.json
-├── ml_model/
+├── ml_model/                 # Training scripts & data
 │   ├── X_train.csv / X_test.csv
 │   ├── y_train.csv / y_test.csv
 │   └── plot_roc.py
 └── README.md
 ```
 
-🚀 Getting Started
-Prerequisites
+---
 
-Python 3.10 or later
+## Machine Learning Model Details
 
-Node.js 18+
+### Model Specs
 
-PostgreSQL 15+
+* **Algorithm:** TabNet (PyTorch-TabNet)
+* **Target Variable:** Gestational Hypertension (0 = No, 1 = Yes)
+* **Calibration:** Isotonic Regression applied to raw logits for accurate probability scoring.
 
-Git (for version control)
+### Data Sources
 
-Installation
+The model was trained on a harmonized dataset from:
 
-Clone the repository
+* **S1 Dataset** (Structured clinical data from Kathmandu Hospital).
+* **Maternal Health Risk Dataset** (Mendeley Data 2022).
 
-git clone <repo-url>
-cd GH_Risk_Predictor_System
+### Production Features (9 Core Inputs)
 
+The model uses the following 9 features for inference:
 
-Backend setup
+1. Age
+2. BMI
+3. Systolic BP
+4. Diastolic BP
+5. Previous Complications
+6. Preexisting Diabetes
+7. Gestational Diabetes
+8. Mental Health History
+9. Heart Rate
 
-cd backend
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-export DATABASE_URL=postgresql+psycopg2://postgres:postgres@localhost:5432/gh_risk
-uvicorn app.main:app --reload
+### Evaluation (AUC-ROC)
 
-
-Frontend setup
-
-cd ../frontend
-npm install
-npm run dev
-
-
-Access the app at http://localhost:5173
-
-(Optional) Run PostgreSQL in Docker
-
-docker run -d --name gh_postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -p 5432:5432 postgres:15
-
-🔐 Authentication & User Roles
-Role	Permissions
-Clinician	Enter patient data, generate predictions, record advice
-Doctor	View risk results for specific patients
-Patient	View personal prediction and next ANC visit
-
-Authentication uses secure email-based or Google Sign-In login, with session management handled by the backend.
-
-🎮 Usage
-Clinician Workflow
-
-Search or register a patient.
-
-Enter clinical parameters (Age, BMI, BP, etc.).
-
-Click Predict Risk to generate a result.
-
-Review the risk class (High / Low) and interpretable reasons.
-
-Schedule or update the next ANC visit.
-
-Patient Experience
-
-Log in to view latest GH risk result.
-
-See status and next ANC visit date.
-
-Confirm or reschedule attendance of the scheduled ANC Visit
-
-Review doctor’s advice or notes.
-
-🧠 Machine Learning Model
-Model Details
-
-Algorithm: TabNet (PyTorch-TabNet)
-
-Training Data: Two sources were used:
-
-S1 Dataset (Structured clinical data)
-
-Maternal Health Risk Dataset – Mendeley 2022
-
-Target Variable: Gestational Hypertension (0 = No, 1 = Yes)
-
-Production Features (9):
-
-Age, BMI, Systolic BP, Diastolic BP,
-Previous Complications, Preexisting Diabetes,
-Gestational Diabetes, Mental Health, Heart Rate
-
-
-Calibration: Isotonic Regression for probability calibration
-
-Explainability: SHAP values for feature importance
-
-Exported Artifacts:
-
-tabnet_model.pkl
-
-isotonic_calibrator.pkl
-
-feature_order.json
-
-threshold.json
-
-post_rules.json (optional)
-
-📈 Model Evaluation — AUC-ROC Visualization
-
-Visualize the Receiver Operating Characteristic curve for your model:
-
+To visualize the performance of the model on test data:
+```bash
 python plot_roc.py \
   --model ./backend/ml_model/tabnet_model.pkl \
   --calibrator ./backend/ml_model/isotonic_calibrator.pkl \
@@ -209,107 +117,164 @@ python plot_roc.py \
   --y_test ./ml_model/y_test.csv \
   --out_png ./ml_model/roc_curve.png \
   --out_csv ./ml_model/roc_points.csv
+```
 
+---
 
-This script saves:
+## 🚀 Getting Started
 
-ml_model/roc_curve.png — ROC plot
+### Prerequisites
 
-ml_model/roc_points.csv — Curve data (FPR, TPR, thresholds)
+* Python 3.10+
+* Node.js 18+
+* PostgreSQL 15+
+* Git
 
-📡 API Documentation
+### 1. Installation
+```bash
+git clone <your-repo-url>
+cd GH_Risk_Predictor_System
+```
 
-Interactive docs: http://localhost:8000/docs
+### 2. Backend Setup
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
 
-Prediction
+# Configure DB Connection
+export DATABASE_URL=postgresql+psycopg2://postgres:postgres@localhost:5432/gh_risk
 
-POST /gh/predict-gh — Generate and save a prediction.
+# Run Server
+uvicorn app.main:app --reload
+```
 
-GET /gh/latest/{patient_id} — Retrieve latest prediction.
+### 3. Frontend Setup
+```bash
+cd ../frontend
+npm install
+npm run dev
+```
 
-Patient Endpoints
+Access the app at `http://localhost:5173`
 
-GET /patients/resolve?q=<email|id|name>
+### 4. (Optional) Run Database via Docker
+```bash
+docker run -d --name gh_postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -p 5432:5432 postgres:15
+```
 
-GET /patients/{patient_id}
+---
 
-POST /patients/{id}/advice
+##  Authentication & User Roles
 
-Visit Scheduling
+Authentication is handled via secure email login or Google Sign-In.
 
-GET /visits/gh/me/next-visit?email=<email>
+| Role | Permissions |
+|------|-------------|
+| **Clinician** | Register patients, input clinical data, generate predictions, record advice. |
+| **Doctor** | View high-level risk results and patient history. |
+| **Patient** | View personal prediction results and next scheduled ANC visit. |
 
-POST /visits/reschedule
+---
 
-🗄️ Database Schema (Overview)
-Table	Purpose
-users	Stores user credentials and roles
-patients	Links to users and medical records
-appointments	ANC visit schedules
-gh_predictions	Risk results, scores, and reasons
-patient_advice	Clinician recommendations & notes
-🔧 Configuration
-Backend (backend/.env)
+## 🎮 Usage Guide
+
+### Clinician Workflow
+
+1. **Search/Register:** Locate patient via email or ID.
+2. **Input Data:** Enter the 9 clinical parameters (BP, BMI, etc.).
+3. **Predict:** Click "Predict Risk".
+4. **Review:** See High/Low classification and SHAP-based reasons.
+5. **Schedule:** System suggests next ANC visit date; Clinician confirms.
+
+### Patient Workflow
+
+1. **Login:** Access personal dashboard.
+2. **View Status:** See latest risk result.
+3. **ANC Visit:** Check date of next appointment.
+4. **Advice:** Read notes left by the doctor.
+
+---
+
+## API Documentation
+
+Interactive Swagger UI is available at `http://localhost:8000/docs` when backend is running.
+
+### Key Endpoints
+
+* `POST /gh/predict-gh` — Generate prediction & save to DB.
+* `GET /gh/latest/{patient_id}` — Get most recent risk assessment.
+* `GET /patients/resolve` — Search patient by email/ID.
+* `POST /visits/reschedule` — Modify ANC appointment.
+
+---
+
+## Database Schema
+
+| Table | Purpose |
+|-------|---------|
+| `users` | Auth credentials, roles, email. |
+| `patients` | Demographics, links to user accounts. |
+| `gh_predictions` | ML results, probabilities, input snapshots. |
+| `appointments` | ANC visit dates and status. |
+| `patient_advice` | Clinical notes from doctors. |
+
+---
+
+## Configuration
+
+### Backend (`backend/.env`)
+```env
 DATABASE_URL=postgresql+psycopg2://postgres:postgres@localhost:5432/gh_risk
 CORS_ORIGINS=http://localhost:5173
-SECRET_KEY=your-secret-key
+SECRET_KEY=your-secret-key-here
+```
 
-Frontend (frontend/.env)
+### Frontend (`frontend/.env`)
+```env
 VITE_API_URL=http://localhost:8000
 VITE_APP_NAME="GH Risk Predictor"
+```
 
-🧪 Testing
+---
 
-Backend
+##  Testing
 
+### Backend
+```bash
 pytest -v
+```
 
-
-Frontend
-
+### Frontend
+```bash
 npm test
+```
 
+### API
 
-API
-Swagger UI available at http://localhost:8000/docs
+Swagger UI available at `http://localhost:8000/docs`
 
-📊 Development Status
+---
 
-✅ Completed
+## Development Status
 
-TabNet model training and export
+* **Completed:** TabNet training, FastAPI backend, React Dashboards, DB Persistence, ANC Scheduling.
+* **In Progress:** Automated Email/SMS reminders.
+* **Future:** EHR Integration (HL7/FHIR), PWA Mobile deployment.
 
-FastAPI prediction API
+---
 
-Patient and Clinician dashboards
+## 🧬 Acknowledgements
 
-Persistent database storage
+Developed as a **Final Year Project** at **Strathmore University** — Faculty of Informatics and Computer Science.
 
-ANC visit management and advice logging
+**Supervisor:** Mr. Daniel Machanje
 
-🚧 Upcoming
+---
 
-Automated email/SMS reminders for upcoming visits
-
-Feature-importance visualization on UI
-
-Clinician analytics dashboard
-
-📈 Future Enhancements
-
-Integration with hospital EHR systems
-
-Mobile-friendly PWA deployment
-
-Predictive alerting for high-risk patients
-
-🧬 Acknowledgements
-
-Developed as a Final Year Project at
-Strathmore University — Faculty of Informatics and Computer Science
-
-Supervisor: Mr. Daniel Machanje
-
-📜 License
+## License
 
 Released for academic and educational use only.
