@@ -24,8 +24,8 @@ Using the TabNet architecture, the model achieved a **Recall of ~90%**, meeting 
 
 **Datasets Used:**
 
-- **Mendeley Dataset
-- **Kathmandu Dataset- Case study of 300+ patients  
+- Mendeley Dataset
+- Kathmandu Dataset- Case study of 300+ patients  
 
 **Harmonization Steps:**
 
