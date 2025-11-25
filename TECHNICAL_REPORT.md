@@ -24,8 +24,8 @@ Using the TabNet architecture, the model achieved a **Recall of ~90%**, meeting 
 
 **Datasets Used:**
 
-- **Mendeley Dataset:** Acute physiological vitals (SBP, DBP, Heart Rate)  
-- **Kathmandu Dataset:** Longitudinal obstetric history (Gravida, Parity, GH history)  
+- **Mendeley Dataset
+- **Kathmandu Dataset- Case study of 300+ patients  
 
 **Harmonization Steps:**
 
@@ -77,8 +77,6 @@ Traditional MLPs struggle on tabular health data. TabNet provides:
 - **Optimizer:** Adam (lr = 0.02)  
 - **Loss:** Weighted Cross-Entropy (penalizes missed high-risk cases)  
 - **Batch Size:** 1024 (Virtual batch: 128)  
-- **Epochs:** 200  
-- **Early Stopping:** patience = 85  
 
 ---
 
@@ -171,10 +169,10 @@ Priority metrics for this medical classification task:
 
 ## 6. Conclusion
 
-The project successfully delivered a **Gestational Hypertension Prediction System** with:  
+The project successfully delivered a **Gestational Hypertension Risk Prediction System** with:  
 
 - High predictive performance  
 - Clinical-grade recall (~90%)  
-- Built-in interpretability via TabNet masks  
+- Built-in interpretability  
 - Full-stack pipeline integration (**React + FastAPI + PostgreSQL**)  
 - ANC visit scheduling for actionable patient care  
