@@ -16,8 +16,8 @@ The GH Risk Prediction System applies a trained **PyTorch-TabNet** model to ante
 * **Role-Based Access Control:** Dedicated interfaces for **Clinicians** (Input/Manage), **Doctors** (Oversight), and **Patients** (View).
 * **ANC Management:** ANC next-visit scheduling and rescheduling capabilities.
 * **Persistent History:** Every prediction is stored and linked to the patient's medical history for longitudinal tracking.
-* **Explainable AI (XAI):** Clear, feature-based reasoning (using SHAP values) for every prediction to aid clinical trust.
-* **⚡ Modern UI:** Fast, responsive dashboards built with React and Tailwind CSS.
+* **Explainable AI (XAI):** Clear, feature-based reasoning for every prediction to aid clinical trust.
+* **Modern UI:** Fast, responsive dashboards built with React and Tailwind CSS.
 
 ---
 
