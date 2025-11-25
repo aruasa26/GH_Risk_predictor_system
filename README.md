@@ -26,8 +26,8 @@ The GH Risk Prediction System applies a trained **PyTorch-TabNet** model to ante
 ### Frontend
 * **Framework:** React (Vite)
 * **Styling:** Tailwind CSS
-* **State/Auth:** React Router + Context API
-* **Networking:** Axios
+* **Auth:** Google Auth, email verification and Role Based Access
+
 
 ### Backend
 * **Framework:** FastAPI (Python)
