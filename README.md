@@ -44,7 +44,7 @@ The GH Risk Prediction System applies a trained **PyTorch-TabNet** model to ante
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 ```
 GH_Risk_Predictor_System/
 ├── backend/
@@ -121,7 +121,7 @@ python plot_roc.py \
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -180,7 +180,7 @@ Authentication is handled via secure email login or Google Sign-In.
 
 ---
 
-## 🎮 Usage Guide
+##  Usage Guide
 
 ### Clinician Workflow
 
@@ -267,7 +267,7 @@ Swagger UI available at `http://localhost:8000/docs`
 
 ---
 
-## 🧬 Acknowledgements
+##  Acknowledgements
 
 Developed as a **Final Year Project** at **Strathmore University** — Faculty of Informatics and Computer Science.
 
